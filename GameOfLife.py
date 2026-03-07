@@ -1,6 +1,15 @@
 # Game of Life
 # Teddy Rodd
 
+"""
+Rules:
+Survive: cell has 2-3 cells next to it
+Overpop: cell dies when it has more than 3 cells next to it
+Underpop: cell dies when it has less than 2 cells next to it
+Birth: If an empty spot has three cells around it a new cell is made
+
+"""
+
 import time
 import sys
 import keyboard
@@ -16,7 +25,7 @@ def main():
     world_height = 25
     world_width = 50
 
-    world_gen()
+    world_map = world_gen(world_height,world_width)
 
     # Main Game Loop
     while True:
@@ -35,8 +44,18 @@ def main():
 
 
 # Creates game space
-def world_gen():
-    pass
+def world_gen(world_height,world_width):
+    world_map = []
+    for y in range(world_height):
+        row = []
+        for x in range(world_width):
+            if y == 0 or y == world_height -1 or x == 0 or x == world_width:
+                row.append("@")
+            else:
+                row.append(" ")
+        world_map.append(row)
+
+    return world_map
 
 
 # Draws the game each frame
