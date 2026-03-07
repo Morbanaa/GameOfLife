@@ -14,13 +14,10 @@ import time
 import sys
 import keyboard
 
-class Cell():
+class Pencil():
     def __init__(self,ypos,xpos):
         self.ypos = ypos
         self.xpos = xpos
-
-class Pencil(Cell):
-    pass
 
 
 def main():
@@ -34,8 +31,7 @@ def main():
     # Create Pencil
     pencil = Pencil(world_height//2,world_width//2)
 
-    # Stores All Cell Objects
-    cells = []
+    is_running = False
 
     # Main Game Loop
     while True:
@@ -43,14 +39,27 @@ def main():
         clear_move_cursor()
 
         # Update
-        cells = draw_cells(world_map,pencil,cells)
-        update_cells()
+        cells = draw_cells(world_map,pencil)
 
+        if is_running == True:
+            update_cells(world_map,world_height,world_width)
+
+        if keyboard.is_pressed("B") and is_running == False:
+            is_running = True
+
+        if keyboard.is_pressed("P") and is_running == True:
+            is_running = False
+        
         # Render
-        render_world(world_map,world_height,world_width,pencil,cells)
+        print("Press P to Pause/Simulation || Press B to Begin Simulation:")
+        print("----------------------------------------------------------")
+        render_world(world_map,world_height,world_width,pencil)
 
         # Controls Simulation Tick Rate
-        time.sleep(.1)
+        if is_running:
+            time.sleep(.1)
+        else:
+            time.sleep(.05)
 
 
 # Creates game space
@@ -69,28 +78,19 @@ def world_gen(world_height,world_width):
 
 
 # Draws the game each frame
-def render_world(world_map,world_height,world_width,pencil,cells):
+def render_world(world_map,world_height,world_width,pencil):
     for y in range(world_height):
         for x in range(world_width):
-            # Draws blocks
-            cell_here = False
-            for cell in cells:
-                if cell.ypos == y and cell.xpos == x:
-                    cell_here = True
-                    print(f"X", end="")
-                    break
-            if cell_here:
-                continue
-
+            # Draws the pencil
             if y == pencil.ypos and x == pencil.xpos:
                 print("^",end="")
-            else:
+            else: # Draws everything else
                 print(world_map[y][x],end="")
         print()
 
 
 # User can create new cell objects
-def draw_cells(world_map,pencil,cells):
+def draw_cells(world_map,pencil):
     if (keyboard.is_pressed("W") or keyboard.is_pressed("up")) and world_map[pencil.ypos -1][pencil.xpos] != "@":
         pencil.ypos -= 1
     if (keyboard.is_pressed("S") or keyboard.is_pressed("down")) and world_map[pencil.ypos +1][pencil.xpos] != "@":
@@ -101,14 +101,45 @@ def draw_cells(world_map,pencil,cells):
         pencil.xpos += 1
       
     if keyboard.is_pressed("space"):
-        cells.append(Cell(pencil.ypos,pencil.xpos))
-     
-    return cells
+        world_map[pencil.ypos][pencil.xpos] = "X"
 
 
 # Determins if cells surive, birth, death by (underpopulation or overpopulation)
-def update_cells():
-    pass
+def update_cells(world_map,world_height,world_width):
+    for y in range(world_height):
+        for x in range(world_width):
+            surounded_score = 0
+            if world_map[y][x] == "X":
+                if world_map[y -1][x -1] == "X":
+                    surounded_score += 1
+                if world_map[y -1][x] == "X":
+                    surounded_score += 1
+                if world_map[y -1][x + 1] == "X":
+                    surounded_score += 1
+                if world_map[y][x - 1] == "X":
+                    surounded_score += 1
+                if world_map[y][x + 1] == "X":
+                    surounded_score += 1
+                if world_map[y +1][x -1] == "X":
+                    surounded_score += 1
+                if world_map[y +1][x] == "X":
+                    surounded_score += 1
+                if world_map[y +1][x + 1] == "X":
+                    surounded_score += 1
+                
+                # Underpop
+                if surounded_score < 2:
+                    world_map[y][x] = " "
+
+                # Overpop
+                if surounded_score > 3:
+                    world_map[y][x] = " "
+
+                # Survives if == 2-3
+
+
+
+
 
 
 # Move cursor to top left of console to prep for next frame
