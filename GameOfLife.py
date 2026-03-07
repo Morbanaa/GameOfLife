@@ -37,7 +37,7 @@ def main():
         update_cells()
 
         # Render
-        render_world()
+        render_world(world_map,world_height,world_width)
 
         # Controls Simulation Tick Rate
         time.sleep(.1)
@@ -49,7 +49,7 @@ def world_gen(world_height,world_width):
     for y in range(world_height):
         row = []
         for x in range(world_width):
-            if y == 0 or y == world_height -1 or x == 0 or x == world_width:
+            if y == 0 or y == world_height -1 or x == 0 or x == world_width -1:
                 row.append("@")
             else:
                 row.append(" ")
@@ -59,8 +59,11 @@ def world_gen(world_height,world_width):
 
 
 # Draws the game each frame
-def render_world():
-    pass
+def render_world(world_map,world_height,world_width):
+    for y in range(world_height):
+        for x in range(world_width):
+            print(world_map[y][x],end="")
+        print()
 
 
 # User can create new cell objects
