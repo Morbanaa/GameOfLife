@@ -40,7 +40,7 @@ def main():
         clear_move_cursor()
 
         # Update
-        draw_cells()
+        draw_cells(world_map,pencil)
         update_cells()
 
         # Render
@@ -77,8 +77,15 @@ def render_world(world_map,world_height,world_width,pencil):
 
 
 # User can create new cell objects
-def draw_cells():
-    pass
+def draw_cells(world_map,pencil):
+    if (keyboard.is_pressed("W") or keyboard.is_pressed("up")) and world_map[pencil.ypos -1][pencil.xpos] != "@":
+        pencil.ypos -= 1
+    if (keyboard.is_pressed("S") or keyboard.is_pressed("down")) and world_map[pencil.ypos +1][pencil.xpos] != "@":
+        pencil.ypos += 1
+    if (keyboard.is_pressed("A") or keyboard.is_pressed("left")) and world_map[pencil.ypos][pencil.xpos -1] != "@":
+        pencil.xpos -= 1
+    if (keyboard.is_pressed("D") or keyboard.is_pressed("right")) and world_map[pencil.ypos][pencil.xpos +1] != "@":
+        pencil.xpos += 1
 
 
 # Determins if cells surive, birth, death by (underpopulation or overpopulation)
