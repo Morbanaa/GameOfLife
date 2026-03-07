@@ -106,27 +106,32 @@ def draw_cells(world_map,pencil):
 
 # Determins if cells surive, birth, death by (underpopulation or overpopulation)
 def update_cells(world_map,world_height,world_width):
-    for y in range(world_height):
-        for x in range(world_width):
+    for y in range(2,world_height -2):
+        for x in range(2,world_width -2):
+
+            # Determins what is around each tile
             surounded_score = 0
-            if world_map[y][x] == "X":
-                if world_map[y -1][x -1] == "X":
-                    surounded_score += 1
-                if world_map[y -1][x] == "X":
-                    surounded_score += 1
-                if world_map[y -1][x + 1] == "X":
-                    surounded_score += 1
-                if world_map[y][x - 1] == "X":
-                    surounded_score += 1
-                if world_map[y][x + 1] == "X":
-                    surounded_score += 1
-                if world_map[y +1][x -1] == "X":
-                    surounded_score += 1
-                if world_map[y +1][x] == "X":
-                    surounded_score += 1
-                if world_map[y +1][x + 1] == "X":
-                    surounded_score += 1
-                
+            # Top Row
+            if world_map[y -1][x -1] == "X":
+                surounded_score += 1
+            if world_map[y -1][x] == "X":
+                surounded_score += 1
+            if world_map[y -1][x + 1] == "X":
+                surounded_score += 1
+            # Middle Row
+            if world_map[y][x - 1] == "X":
+                surounded_score += 1
+            if world_map[y][x + 1] == "X":
+                surounded_score += 1
+            # Bottom Row
+            if world_map[y +1][x -1] == "X":
+                surounded_score += 1
+            if world_map[y +1][x] == "X":
+                surounded_score += 1
+            if world_map[y +1][x + 1] == "X":
+                surounded_score += 1
+
+            if world_map[y][x] == "X":        
                 # Underpop
                 if surounded_score < 2:
                     world_map[y][x] = " "
@@ -137,7 +142,10 @@ def update_cells(world_map,world_height,world_width):
 
                 # Survives if == 2-3
 
-
+            # Breed
+            elif world_map[y][x] == " ":
+                if surounded_score == 3:
+                    world_map[y][x] = "X"
 
 
 
