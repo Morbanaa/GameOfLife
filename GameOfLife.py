@@ -41,15 +41,23 @@ def main():
         # Update
         cells = draw_cells(world_map,pencil)
 
+        # Cells only move if sim is running
         if is_running == True:
             update_cells(world_map,world_height,world_width)
 
+
+        # Pauses and Starts Sim
         if keyboard.is_pressed("B") and is_running == False:
             is_running = True
-
         if keyboard.is_pressed("P") and is_running == True:
             is_running = False
         
+        # Restart Program
+        if keyboard.is_pressed("R"):
+            is_running = False
+            # Rebuilds map without cells
+            world_map = world_gen(world_height,world_width)
+
         # Render
         print("Press P to Pause/Simulation || Press B to Begin Simulation:")
         print("----------------------------------------------------------")
