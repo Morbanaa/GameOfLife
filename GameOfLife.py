@@ -19,13 +19,20 @@ class Cell():
         self.ypos = ypos
         self.xpos = xpos
 
+class Pencil(Cell):
+    pass
+
 
 def main():
-    # Creates Game Map
+    # World Bounds
     world_height = 25
     world_width = 50
 
+    # Creates Game Map
     world_map = world_gen(world_height,world_width)
+
+    # Create Pencil
+    pencil = Pencil(world_height//2,world_width//2)
 
     # Main Game Loop
     while True:
@@ -37,7 +44,7 @@ def main():
         update_cells()
 
         # Render
-        render_world(world_map,world_height,world_width)
+        render_world(world_map,world_height,world_width,pencil)
 
         # Controls Simulation Tick Rate
         time.sleep(.1)
@@ -59,10 +66,13 @@ def world_gen(world_height,world_width):
 
 
 # Draws the game each frame
-def render_world(world_map,world_height,world_width):
+def render_world(world_map,world_height,world_width,pencil):
     for y in range(world_height):
         for x in range(world_width):
-            print(world_map[y][x],end="")
+            if y == pencil.ypos and x == pencil.xpos:
+                print("^",end="")
+            else:
+                print(world_map[y][x],end="")
         print()
 
 
