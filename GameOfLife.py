@@ -34,17 +34,20 @@ def main():
     # Create Pencil
     pencil = Pencil(world_height//2,world_width//2)
 
+    # Stores All Cell Objects
+    cells = []
+
     # Main Game Loop
     while True:
         # Prep for next frame
         clear_move_cursor()
 
         # Update
-        draw_cells(world_map,pencil)
+        cells = draw_cells(world_map,pencil,cells)
         update_cells()
 
         # Render
-        render_world(world_map,world_height,world_width,pencil)
+        render_world(world_map,world_height,world_width,pencil,cells)
 
         # Controls Simulation Tick Rate
         time.sleep(.1)
@@ -66,9 +69,19 @@ def world_gen(world_height,world_width):
 
 
 # Draws the game each frame
-def render_world(world_map,world_height,world_width,pencil):
+def render_world(world_map,world_height,world_width,pencil,cells):
     for y in range(world_height):
         for x in range(world_width):
+            # Draws blocks
+            cell_here = False
+            for cell in cells:
+                if cell.ypos == y and cell.xpos == x:
+                    cell_here = True
+                    print(f"X", end="")
+                    break
+            if cell_here:
+                continue
+
             if y == pencil.ypos and x == pencil.xpos:
                 print("^",end="")
             else:
@@ -77,7 +90,7 @@ def render_world(world_map,world_height,world_width,pencil):
 
 
 # User can create new cell objects
-def draw_cells(world_map,pencil):
+def draw_cells(world_map,pencil,cells):
     if (keyboard.is_pressed("W") or keyboard.is_pressed("up")) and world_map[pencil.ypos -1][pencil.xpos] != "@":
         pencil.ypos -= 1
     if (keyboard.is_pressed("S") or keyboard.is_pressed("down")) and world_map[pencil.ypos +1][pencil.xpos] != "@":
@@ -86,6 +99,11 @@ def draw_cells(world_map,pencil):
         pencil.xpos -= 1
     if (keyboard.is_pressed("D") or keyboard.is_pressed("right")) and world_map[pencil.ypos][pencil.xpos +1] != "@":
         pencil.xpos += 1
+      
+    if keyboard.is_pressed("space"):
+        cells.append(Cell(pencil.ypos,pencil.xpos))
+     
+    return cells
 
 
 # Determins if cells surive, birth, death by (underpopulation or overpopulation)
