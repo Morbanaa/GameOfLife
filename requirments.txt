@@ -1,0 +1,25 @@
+# The game requires the `keyboard` module for detecting key presses.
+# Install with pip for your Python version:
+
+# Standard installation (Windows/Linux/macOS)
+pip install keyboard
+
+# If using Python 3 explicitly
+python3 -m pip install keyboard
+
+# If you have multiple Python versions
+py -3 -m pip install keyboard
+
+# If you get permissions errors on Linux/macOS
+sudo pip install keyboard
+sudo python3 -m pip install keyboard
+
+# Inside a virtual environment (recommended)
+python -m venv venv        # create venv
+source venv/bin/activate   # Linux/macOS
+venv\Scripts\activate      # Windows
+pip install keyboard
+
+# Upgrading pip if install fails
+python -m pip install --upgrade pip
+pip install keyboard
