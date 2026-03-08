@@ -120,7 +120,7 @@ def draw_cells(world_map,pencil):
         world_map[pencil.ypos][pencil.xpos] = "X"
 
 def create_predator(world_map,world_height,world_width):
-    rand_num = random.randint(1,5)
+    rand_num = random.randint(1,15)
 
     if rand_num == 2:
         world_map[random.randint(2,world_height -3)][random.randint(2,world_width -3)] = "P"
@@ -130,6 +130,8 @@ def move_predator(world_map,world_height,world_width):
     for y in range(world_height):
         for x in range(world_width):
             if world_map[y][x] == "P":
+                if y == 1 or y == world_height -2 or x == 1 or x == world_width -2:
+                    world_map[y][x] = " "
                 if y > 2 and y < world_height -2 and x > 2 and x < world_width -2:
                     rand_y = random.randint(-1,1)
                     rand_x = random.randint(-1,1)
