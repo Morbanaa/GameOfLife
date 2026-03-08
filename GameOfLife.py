@@ -123,7 +123,7 @@ def create_predator(world_map,world_height,world_width):
     rand_num = random.randint(1,5)
 
     if rand_num == 2:
-        world_map[random.randint(2,world_height -2)][random.randint(2,world_width -2)] = "P"
+        world_map[random.randint(2,world_height -3)][random.randint(2,world_width -3)] = "P"
 
 
 def move_predator(world_map,world_height,world_width):
@@ -145,7 +145,7 @@ def update_cells(world_map,world_height,world_width):
     for y in range(2,world_height -2):
         for x in range(2,world_width -2):
 
-            # Determins what is around each tile
+            # Determins number of cells around each cell
             surounded_score = 0
             # Top Row
             if world_map[y -1][x -1] == "X":
@@ -167,6 +167,27 @@ def update_cells(world_map,world_height,world_width):
             if world_map[y +1][x + 1] == "X":
                 surounded_score += 1
 
+            predator = False
+            # Top Row
+            if world_map[y -1][x -1] == "P":
+                predator = True
+            if world_map[y -1][x] == "P":
+                predator = True
+            if world_map[y -1][x + 1] == "P":
+                predator = True
+            # Middle Row
+            if world_map[y][x - 1] == "P":
+               predator = True
+            if world_map[y][x + 1] == "P":
+                predator = True
+            # Bottom Row
+            if world_map[y +1][x -1] == "P":
+                predator = True
+            if world_map[y +1][x] == "P":
+                predator = True
+            if world_map[y +1][x + 1] == "P":
+                predator = True
+
             if world_map[y][x] == "X":        
                 # Underpop
                 if surounded_score < 2:
@@ -178,10 +199,21 @@ def update_cells(world_map,world_height,world_width):
 
                 # Survives if == 2-3
 
-            # Breed
+                # Killed
+                if predator == True:
+                    world_map[y][x] = " "
+
+            # Cells Breed
             if world_map[y][x] == " ":
                 if surounded_score == 3:
                     world_map[y][x] = "X"
+            
+            # Predator Starves
+            if world_map[y][x] == "P":
+                if surounded_score < 6:
+                    world_map[y][x] = " "
+
+            
 
 
 
