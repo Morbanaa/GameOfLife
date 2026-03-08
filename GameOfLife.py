@@ -41,11 +41,13 @@ def main():
 
         # Update
         draw_cells(world_map,pencil)
-        # Cells only move if sim is running
         if is_running == True:
+            # Cells only move if sim is running
             update_cells(world_map,world_height,world_width)
             # Preditors only appear if sim is running
             create_predator(world_map,world_height,world_width)
+            # Only Move if Sim is running
+            move_predator(world_map,world_height,world_width)
 
 
         # Pauses and Starts Sim
@@ -118,10 +120,23 @@ def draw_cells(world_map,pencil):
         world_map[pencil.ypos][pencil.xpos] = "X"
 
 def create_predator(world_map,world_height,world_width):
-    rand_num = random.randint(1,30)
+    rand_num = random.randint(1,5)
 
-    if rand_num == 5:
+    if rand_num == 2:
         world_map[random.randint(2,world_height -2)][random.randint(2,world_width -2)] = "P"
+
+
+def move_predator(world_map,world_height,world_width):
+    for y in range(world_height):
+        for x in range(world_width):
+            if world_map[y][x] == "P":
+                if y > 2 and y < world_height -2 and x > 2 and x < world_width -2:
+                    rand_y = random.randint(-1,1)
+                    rand_x = random.randint(-1,1)
+                    world_map[y][x] = " "
+                    world_map[y + rand_y][x + rand_x] = "P"
+
+
 
 
 
