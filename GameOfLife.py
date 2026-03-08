@@ -13,6 +13,7 @@ Birth: If an empty spot has three cells around it a new cell is made
 import time
 import sys
 import keyboard
+import random
 
 class Pencil():
     def __init__(self,ypos,xpos):
@@ -39,11 +40,12 @@ def main():
         clear_move_cursor()
 
         # Update
-        cells = draw_cells(world_map,pencil)
-
+        draw_cells(world_map,pencil)
         # Cells only move if sim is running
         if is_running == True:
             update_cells(world_map,world_height,world_width)
+            # Preditors only appear if sim is running
+            create_predator(world_map,world_height,world_width)
 
 
         # Pauses and Starts Sim
@@ -92,6 +94,10 @@ def render_world(world_map,world_height,world_width,pencil):
             # Draws the pencil
             if y == pencil.ypos and x == pencil.xpos:
                 print("^",end="")
+            elif world_map[y][x] == "X":
+                print(f"{GREEN}X{ENDC}",end="")
+            elif world_map[y][x] == "P":
+                print(f"{RED}P{ENDC}",end="")
             else: # Draws everything else
                 print(world_map[y][x],end="")
         print()
@@ -110,6 +116,13 @@ def draw_cells(world_map,pencil):
       
     if keyboard.is_pressed("space"):
         world_map[pencil.ypos][pencil.xpos] = "X"
+
+def create_predator(world_map,world_height,world_width):
+    rand_num = random.randint(1,30)
+
+    if rand_num == 5:
+        world_map[random.randint(2,world_height -2)][random.randint(2,world_width -2)] = "P"
+
 
 
 # Determins if cells surive, birth, death by (underpopulation or overpopulation)
@@ -151,10 +164,9 @@ def update_cells(world_map,world_height,world_width):
                 # Survives if == 2-3
 
             # Breed
-            elif world_map[y][x] == " ":
+            if world_map[y][x] == " ":
                 if surounded_score == 3:
                     world_map[y][x] = "X"
-
 
 
 
@@ -162,6 +174,13 @@ def update_cells(world_map,world_height,world_width):
 def clear_move_cursor():
     sys.stdout.write("\033[H")
     sys.stdout.flush()
+
+
+# Colors
+RED          = '\033[31m'
+GREEN        = '\033[32m'
+# Reset Color
+ENDC = '\033[0m'
 
 
 # Program Entry Point
