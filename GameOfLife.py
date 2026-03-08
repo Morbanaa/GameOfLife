@@ -199,9 +199,9 @@ def update_cells(world_map,world_height,world_width):
 
                 # Survives if == 2-3
 
-                # Killed
+                # Killed Creates new predator
                 if predator == True:
-                    world_map[y][x] = " "
+                    world_map[y][x] = "P"
 
             # Cells Breed
             if world_map[y][x] == " ":
@@ -210,7 +210,7 @@ def update_cells(world_map,world_height,world_width):
             
             # Predator Starves
             if world_map[y][x] == "P":
-                if surounded_score < 6:
+                if surounded_score < 6 and predator == False:
                     world_map[y][x] = " "
 
             
