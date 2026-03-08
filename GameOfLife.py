@@ -130,16 +130,15 @@ def move_predator(world_map,world_height,world_width):
     for y in range(world_height):
         for x in range(world_width):
             if world_map[y][x] == "P":
-                if y == 1 or y == world_height -2 or x == 1 or x == world_width -2:
+                rand_y = random.randint(-1,1)
+                rand_x = random.randint(-1,1)
+
+                new_y = y + rand_y
+                new_x = x + rand_x
+
+                if world_map[new_y][new_x] != "@":
                     world_map[y][x] = " "
-                if y > 2 and y < world_height -2 and x > 2 and x < world_width -2:
-                    rand_y = random.randint(-1,1)
-                    rand_x = random.randint(-1,1)
-                    world_map[y][x] = " "
-                    world_map[y + rand_y][x + rand_x] = "P"
-
-
-
+                    world_map[new_y][new_x] = "P"
 
 
 # Determins if cells surive, birth, death by (underpopulation or overpopulation)
@@ -203,7 +202,9 @@ def update_cells(world_map,world_height,world_width):
 
                 # Killed Creates new predator
                 if predator == True:
-                    world_map[y][x] = "P"
+                    rand_num = random.randint(1,2)
+                    if rand_num == 2: # Creates predator half the time
+                        world_map[y][x] = "P"
 
             # Cells Breed
             if world_map[y][x] == " ":
